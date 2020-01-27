@@ -22,7 +22,7 @@ glutInit(sys.argv)
 glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
 
 # Create a window, setting its title
-glutCreateWindow('interactive')
+glutCreateWindow('Universe')
 
 # Set the display callback.  You can set other callbacks for keyboard and
 # mouse events.
