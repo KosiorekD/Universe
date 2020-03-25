@@ -1,11 +1,9 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-import serial
-import os
-import threading
+from Shapes import *
 
-ESCAPE = '\033'
+ESCAPE = b'\x1b'
 
 window = 0
 
@@ -15,6 +13,8 @@ Y_AXIS = 0.0
 Z_AXIS = 0.0
 
 DIRECTION = 1
+
+Test = Cube("Test Cube")
 
 def InitGL(Width, Height):
     glClearColor(0.0, 0.0, 0.0, 0.0)
@@ -31,7 +31,7 @@ def keyPressed(*args):
     if args[0] == ESCAPE:
             sys.exit()
 
-def DrawGLScene():
+def drawScene():
     global X_AXIS, Y_AXIS, Z_AXIS
     global DIRECTION
 
@@ -44,49 +44,10 @@ def DrawGLScene():
     glRotatef(Y_AXIS, 0.0, 1.0, 0.0)
     glRotatef(Z_AXIS, 0.0, 0.0, 1.0)
 
-    # Draw Cube (multiple quads)
-    glBegin(GL_QUADS)
+    Test.create()
 
-    glColor3f(0.0, 1.0, 0.0)
-    glVertex3f( 1.0, 1.0, -1.0)
-    glVertex3f(-1.0, 1.0, -1.0)
-    glVertex3f(-1.0, 1.0, 1.0)
-    glVertex3f( 1.0, 1.0, 1.0)
-
-    glColor3f(1.0, 0.0, 0.0)
-    glVertex3f( 1.0,-1.0, 1.0)
-    glVertex3f(-1.0,-1.0, 1.0)
-    glVertex3f(-1.0,-1.0,-1.0)
-    glVertex3f( 1.0,-1.0,-1.0)
-
-    glColor3f(0.0, 1.0, 0.0)
-    glVertex3f( 1.0, 1.0, 1.0)
-    glVertex3f(-1.0, 1.0, 1.0)
-    glVertex3f(-1.0,-1.0, 1.0)
-    glVertex3f( 1.0,-1.0, 1.0)
-
-    glColor3f(1.0, 1.0, 0.0)
-    glVertex3f( 1.0,-1.0,-1.0)
-    glVertex3f(-1.0,-1.0,-1.0)
-    glVertex3f(-1.0, 1.0,-1.0)
-    glVertex3f( 1.0, 1.0,-1.0)
-
-    glColor3f(0.0, 0.0, 1.0)
-    glVertex3f(-1.0, 1.0, 1.0)
-    glVertex3f(-1.0, 1.0,-1.0)
-    glVertex3f(-1.0,-1.0,-1.0)
-    glVertex3f(-1.0,-1.0, 1.0)
-
-    glColor3f(1.0, 0.0, 1.0)
-    glVertex3f( 1.0, 1.0,-1.0)
-    glVertex3f( 1.0, 1.0, 1.0)
-    glVertex3f( 1.0,-1.0, 1.0)
-    glVertex3f( 1.0,-1.0,-1.0)
-
-    glEnd()
-
-    X_AXIS = X_AXIS - 0.30
-    Z_AXIS = Z_AXIS - 0.30
+    X_AXIS = X_AXIS - 0.10
+    Z_AXIS = Z_AXIS - 0.10
 
     glutSwapBuffers()
 
@@ -98,13 +59,13 @@ def main():
     glutInitWindowSize(640,480)
     glutInitWindowPosition(200,200)
 
-    window = glutCreateWindow('OpenGL Python Cube')
+    window = glutCreateWindow("Universe")
 
-    glutDisplayFunc(DrawGLScene)
-    glutIdleFunc(DrawGLScene)
+    glutDisplayFunc(drawScene)
+    glutIdleFunc(drawScene)
     glutKeyboardFunc(keyPressed)
     InitGL(640, 480)
     glutMainLoop()
 
 if __name__ == "__main__":
-        main()
+    main()
