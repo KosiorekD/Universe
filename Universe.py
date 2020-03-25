@@ -35,6 +35,10 @@ def drawScene():
     global X_AXIS, Y_AXIS, Z_AXIS
     global DIRECTION
 
+    # Enables wireframe mode
+    #glPolygonMode(GL_FRONT, GL_LINE)
+    #glPolygonMode(GL_BACK, GL_LINE)
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
     glLoadIdentity()
@@ -65,6 +69,7 @@ def main():
     glutIdleFunc(drawScene)
     glutKeyboardFunc(keyPressed)
     InitGL(640, 480)
+
     glutMainLoop()
 
 if __name__ == "__main__":
