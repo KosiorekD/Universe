@@ -3,18 +3,28 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from Shapes import *
 
+isWireframeEnabled = False
+
 ESCAPE = b'\x1b'
+ENABLE_WIREFRAME = b'u'
 
-window = 0
+TestCube = Cube("Test Cube", 1, 1, 1)
+Sun = Sphere("Sun", 1.0)
 
-#rotation
-X_AXIS = 0.0
-Y_AXIS = 0.0
-Z_AXIS = 0.0
+def keyPressed(*args):
+    global isWireframeEnabled
 
-DIRECTION = 1
+    if args[0] == ENABLE_WIREFRAME and isWireframeEnabled == True:
+        isWireframeEnabled = False
+        glPolygonMode(GL_FRONT, GL_FILL)
+        glPolygonMode(GL_BACK, GL_FILL)
+    elif args[0] == ENABLE_WIREFRAME and isWireframeEnabled == False:
+        isWireframeEnabled = True
+        glPolygonMode(GL_FRONT, GL_LINE)
+        glPolygonMode(GL_BACK, GL_LINE)
 
-Test = Cube("Test Cube")
+    if args[0] == ESCAPE:
+        sys.exit()
 
 def InitGL(Width, Height):
     glClearColor(0.0, 0.0, 0.0, 0.0)
@@ -27,31 +37,29 @@ def InitGL(Width, Height):
     gluPerspective(45.0, float(Width)/float(Height), 0.1, 100.0)
     glMatrixMode(GL_MODELVIEW)
 
-def keyPressed(*args):
-    if args[0] == ESCAPE:
-            sys.exit()
+def alterObject(object, xDirection, yDirection, zDirection, xRotation, yRotation, zRotation):
+    glPushMatrix()
+
+    glTranslatef(xDirection, yDirection, zDirection)
+
+    glRotatef(xRotation, 1.0, 0.0, 0.0)
+    glRotatef(yRotation, 0.0, 1.0, 0.0)
+    glRotatef(zRotation, 0.0, 0.0, 1.0)
+
+    object.create()
+
+    glPopMatrix()
 
 def drawScene():
-    global X_AXIS, Y_AXIS, Z_AXIS
-    global DIRECTION
-
-    # Enables wireframe mode
-    #glPolygonMode(GL_FRONT, GL_LINE)
-    #glPolygonMode(GL_BACK, GL_LINE)
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
     glLoadIdentity()
     glTranslatef(0.0, 0.0, -6.0)
 
-    glRotatef(X_AXIS, 1.0, 0.0, 0.0)
-    glRotatef(Y_AXIS, 0.0, 1.0, 0.0)
-    glRotatef(Z_AXIS, 0.0, 0.0, 1.0)
-
-    Test.create()
-
-    X_AXIS = X_AXIS - 0.10
-    Z_AXIS = Z_AXIS - 0.10
+    #----------This is where objects in the scene are created/altered----------#
+    alterObject(TestCube, 0.0, 0.0, 0.0, 0.00, 0.00, 45.00)
+    alterObject(Sun, 0.0, 0.0, 0.0, 0.00, 0.00, 0.00)
+    #--------------------------------------------------------------------------#
 
     glutSwapBuffers()
 
